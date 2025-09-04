@@ -1,5 +1,5 @@
 <!--- app-name: MetalLB -->
-# MetalLB & Cert-Manager Deep Dive: Architecture and Best Practices
+# MetalLB Deep Dive: Architecture and Best Practices
 
 ## 1. MetalLB Architecture and Concepts
 
