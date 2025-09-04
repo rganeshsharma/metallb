@@ -1,0 +1,60 @@
+# MetalLB L2 Mode Configuration
+# Save as: metallb-l2-values.yaml
+
+# Global settings
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+
+# Install CRDs
+installCRDs: true
+
+# Controller settings
+controller:
+  enabled: true
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Speaker settings (required for L2 mode)
+speaker:
+  enabled: true  # Must be true for L2 mode
+  
+  # Allow speaker to run on master nodes
+  tolerations: 
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
+    operator: Exists
+  - key: node-role.kubernetes.io/control-plane
+    effect: NoSchedule
+    operator: Exists
+  
+  # FRR disabled for L2 mode
+  frr:
+    enabled: false  # L2 mode doesn't need FRR
+  
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Network policies
+networkPolicy:
+  enabled: true
+  allowExternal: true
+
+# Metrics (optional)
+controller:
+  metrics:
+    enabled: false
+
+speaker:
+  metrics:
+    enabled: false
