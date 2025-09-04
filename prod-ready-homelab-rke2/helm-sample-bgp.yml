@@ -1,0 +1,70 @@
+# Not for Homelab scenario
+# MetalLB BGP Mode Configuration
+# Save as: metallb-bgp-values.yaml
+
+# Global settings
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+
+# Install CRDs
+installCRDs: true
+
+# Controller settings
+controller:
+  enabled: true
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Speaker settings (required for BGP mode)
+speaker:
+  enabled: true  # Must be true for BGP mode
+  
+  # Allow speaker to run on master nodes
+  tolerations: 
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
+    operator: Exists
+  - key: node-role.kubernetes.io/control-plane
+    effect: NoSchedule
+    operator: Exists
+  
+  # FRR enabled for advanced BGP features
+  frr:
+    enabled: true   # Enable FRR for BGP mode
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    metrics:
+      enabled: false  # Enable if you want FRR metrics
+  
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Network policies
+networkPolicy:
+  enabled: true
+  allowExternal: true
+
+# Metrics (optional)
+controller:
+  metrics:
+    enabled: false
+
+speaker:
+  metrics:
+    enabled: false
